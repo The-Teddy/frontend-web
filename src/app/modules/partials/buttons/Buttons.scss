@@ -1,0 +1,36 @@
+.default-back-button {
+  background: #e4e6ef;
+  color: #3f4254;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  i {
+    margin: 5px;
+  }
+}
+.default-back-button:hover {
+  opacity: 0.75;
+}
+
+.default-button {
+  background: #181c32;
+  color: #fff;
+  padding: 5px 15px;
+  border-radius: 8px;
+}
+.default-button:hover {
+  opacity: 0.75;
+}
+
+.default-save-button {
+  background: #6495ed;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  height: 45px;
+  width: 100%;
+  margin: 25px 0 10px 0;
+}
+.default-save-button:hover {
+  opacity: 0.75;
+}

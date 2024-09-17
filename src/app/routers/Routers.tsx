@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "../modules/auth/components/Login";
+import Login from "../modules/auth/Login";
 import Menu from "../modules/pages/menu/Menu";
 import PrivateRoute from "./PrivateRoute";
-import Register from "../modules/auth/components/Register";
-import ForgotPassword from "../modules/auth/components/ForgotPassword";
-import ResetPassword from "../modules/auth/components/ResetPassword";
-import ConfirmEmail from "../modules/auth/components/ConfirmEmail";
+import Register from "../modules/auth/Register";
+import ForgotPassword from "../modules/auth/ForgotPassword";
+import ResetPassword from "../modules/auth/ResetPassword";
+import ConfirmEmail from "../modules/auth/ConfirmEmail";
 import RedirectAuthenticated from "./RedirectAuthenticated";
+import Home from "../modules/pages/home/Home";
+import Company from "../modules/pages/company/Company";
+import Category from "../modules/pages/category/Category";
+import CreateCategory from "../modules/pages/category/CreateCategory";
+import CategoryDetail from "../modules/pages/category/CategoryDetail";
 
 const Routers = () => {
   return (
@@ -64,7 +69,39 @@ const Routers = () => {
           path="/"
           element={
             <PrivateRoute>
-              <Menu />
+              <Home />
+            </PrivateRoute>
+          }
+        ></Route>
+        <Route
+          path="/empresa"
+          element={
+            <PrivateRoute>
+              <Company />
+            </PrivateRoute>
+          }
+        ></Route>
+        <Route
+          path="/categoria"
+          element={
+            <PrivateRoute>
+              <Category />
+            </PrivateRoute>
+          }
+        ></Route>
+        <Route
+          path="/categoria/criar"
+          element={
+            <PrivateRoute>
+              <CreateCategory />
+            </PrivateRoute>
+          }
+        ></Route>
+        <Route
+          path="/categoria/detalhes"
+          element={
+            <PrivateRoute>
+              <CategoryDetail />
             </PrivateRoute>
           }
         ></Route>

@@ -1,0 +1,57 @@
+#top-bar {
+  background: #fff;
+  position: fixed;
+  height: 60px;
+  top: 0;
+  right: 0;
+  left: 200px;
+  transition: 1s all ease;
+  @media (max-width: 992px) {
+    transition: 1s all ease;
+    left: 0;
+  }
+  .top-bar-content {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    .fa-solid.fa-bars,
+    .fa-solid.fa-xmark {
+      font-size: 30px;
+      margin: 10px;
+      cursor: pointer;
+      display: none;
+      @media (max-width: 992px) {
+        display: block;
+      }
+    }
+    .fa-solid.fa-bars:hover,
+    .fa-solid.fa-xmark:hover {
+      opacity: 0.85;
+      scale: 0.9;
+      transition: 1s all ease;
+    }
+
+    .top-bar-box-icon {
+      display: flex;
+      width: 200px;
+      height: 100%;
+      // background: #f2f2f2;
+      .hide-icon-menu {
+        display: none;
+      }
+    }
+    .top-bar-right {
+      padding: 10px;
+      margin-right: 20px;
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+    }
+  }
+}
