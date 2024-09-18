@@ -10,7 +10,7 @@ import Pagination from "../../partials/pagination/Pagination";
 
 const Category = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const { token } = useContext(Context);
+  const { token, user } = useContext(Context);
   const [data, setData] = useState<CategoryInterface[] | null>([]);
   const [limit, setLimit] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
@@ -99,8 +99,14 @@ const Category = () => {
                       </td>
                       <td>{handleConvertDateAndTime(item.createdAt)}</td>
                       <td colSpan={2}>
-                        <i className="fa-solid fa-trash text-danger icon-button"></i>
-                        <i className="fa-solid fa-pen-to-square text-success icon-button"></i>
+                        {!user?.role.includes("super-admin") &&
+                        item.approvalStatus !== "pendente" ? null : (
+                          <>
+                            <Link to={`/categoria/editar?id=${item.id}`}>
+                              <i className="fa-solid fa-pen-to-square text-success icon-button"></i>
+                            </Link>
+                          </>
+                        )}
                         <Link to={`/categoria/detalhes?id=${item.id}`}>
                           <i className="fa-solid fa-eye text-primary icon-button"></i>
                         </Link>

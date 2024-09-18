@@ -5,13 +5,10 @@ export interface CategoryInterface {
   observation: string;
   isActive: boolean;
   isSuggested: boolean;
-  approvedByName: string;
+  analizedByName: string;
   createdByName: string;
-  approvalStatus:
-    | "pendente"
-    | "aprovado"
-    | "rejeitado"
-    | "aprovado com modificação";
+  approvalStatus: "pendente" | "aprovado" | "rejeitado";
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,4 +16,12 @@ export interface CategoryInterface {
 export interface CreateCategoryInterface {
   name: string;
   description: string;
+}
+export interface UpdateCategoryInterface {
+  id: number | null;
+  name: string;
+  description?: string | null;
+  observation?: string | null;
+  isActive: boolean;
+  approvalStatus: "pendente" | "aprovado" | "rejeitado";
 }

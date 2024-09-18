@@ -37,7 +37,7 @@ function handleIsNumber(input: string): string {
 function handleGetEnvVariable() {
   return process.env.REACT_APP_API_URL + "/";
 }
-function handleGetHeaders(contentType: string, token?: string) {
+function handleGetHeaders(contentType: string, token?: string | null) {
   const headers: any = {
     Accept: "application/json",
     "Content-Type": contentType,

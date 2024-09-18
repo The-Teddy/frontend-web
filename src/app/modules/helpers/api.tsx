@@ -4,7 +4,10 @@ import {
   LoginInterface,
   RecoveryPasswordInterface,
 } from "../auth/user.interface";
-import { CreateCategoryInterface } from "../pages/category/CategoryInterface";
+import {
+  CreateCategoryInterface,
+  UpdateCategoryInterface,
+} from "../pages/category/CategoryInterface";
 
 const api = process.env.REACT_APP_API_URL;
 const token = localStorage.getItem("token");
@@ -58,21 +61,25 @@ export function uploadCoverUser(data: FormData, token: string) {
 }
 
 //users
-export function getUser(token: string) {
+export function getUser(token: string | null) {
   return axios.get(`${api}/user`, {
     headers: handleGetHeaders("application/json", token),
   });
 }
 
 //categories
+export function createCategory(data: CreateCategoryInterface, token: string) {
+  return axios.post(`${api}/category/create`, data, {
+    headers: handleGetHeaders("application/json", token),
+  });
+}
 export function getAllCategories(token: string) {
   return axios.get(`${api}/category`, {
     headers: handleGetHeaders("application/json", token),
   });
 }
-
-export function createCategory(data: CreateCategoryInterface, token: string) {
-  return axios.post(`${api}/category/create`, data, {
+export function updateCategory(data: UpdateCategoryInterface, token: string) {
+  return axios.put(`${api}/category/update`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }

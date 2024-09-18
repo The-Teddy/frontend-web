@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./auth.scss";
 import { Link } from "react-router-dom";
 import { Context } from "./AuthContext";
@@ -24,6 +24,9 @@ const Login = () => {
           <input
             autoFocus
             onChange={(e) => setEmail(e.target.value)}
+            onKeyDown={(e) =>
+              e.key === "Enter" ? handleLogin(email, password, emailCode) : ""
+            }
             value={email}
             className="form-control"
             type="email"
@@ -35,6 +38,9 @@ const Login = () => {
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) =>
+              e.key === "Enter" ? handleLogin(email, password, emailCode) : ""
+            }
             className="form-control"
             type="password"
             placeholder="Digite sua senha"

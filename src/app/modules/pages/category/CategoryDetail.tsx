@@ -49,7 +49,10 @@ const CategoryDetail = () => {
                   {category.description}
                 </p>
                 <p>
-                  <strong>Observação: </strong> {category.observation}
+                  <strong>Observações: </strong>{" "}
+                  {category.observation
+                    ? category.observation
+                    : "Não há observações"}
                 </p>
                 <p>
                   <strong>Status: </strong>
@@ -84,8 +87,10 @@ const CategoryDetail = () => {
                   {category.createdByName}
                 </p>
                 <p>
-                  <strong>Aprovado por: </strong>
-                  {category.approvedByName}
+                  <strong>Analizado por: </strong>
+                  {category.analizedByName
+                    ? category.analizedByName
+                    : "Análise pendente"}
                 </p>
                 <p>
                   <strong>Criado em:</strong>

@@ -13,6 +13,9 @@ import Company from "../modules/pages/company/Company";
 import Category from "../modules/pages/category/Category";
 import CreateCategory from "../modules/pages/category/CreateCategory";
 import CategoryDetail from "../modules/pages/category/CategoryDetail";
+import PrivateAndAdminstratorRoute from "./PrivateAndAdminstratorRoute";
+import PrivateAndSuperAdminstratorRoute from "./PrivateAndSuperAdminstratorRoute";
+import UpdateCategory from "../modules/pages/category/UpdateCategory";
 
 const Routers = () => {
   return (
@@ -84,25 +87,33 @@ const Routers = () => {
         <Route
           path="/categoria"
           element={
-            <PrivateRoute>
+            <PrivateAndAdminstratorRoute>
               <Category />
-            </PrivateRoute>
+            </PrivateAndAdminstratorRoute>
           }
         ></Route>
         <Route
           path="/categoria/criar"
           element={
-            <PrivateRoute>
+            <PrivateAndAdminstratorRoute>
               <CreateCategory />
-            </PrivateRoute>
+            </PrivateAndAdminstratorRoute>
           }
         ></Route>
         <Route
           path="/categoria/detalhes"
           element={
-            <PrivateRoute>
+            <PrivateAndAdminstratorRoute>
               <CategoryDetail />
-            </PrivateRoute>
+            </PrivateAndAdminstratorRoute>
+          }
+        ></Route>
+        <Route
+          path="/categoria/editar"
+          element={
+            <PrivateAndAdminstratorRoute>
+              <UpdateCategory />
+            </PrivateAndAdminstratorRoute>
           }
         ></Route>
       </Routes>

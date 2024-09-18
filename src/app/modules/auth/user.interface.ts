@@ -2,9 +2,10 @@ export interface UserModel {
   id: Buffer;
   name: string;
   email: string;
+  role: string;
+  emailVerified: boolean;
+  createdAt: Date;
   isActive: boolean;
-  logo: string | null;
-  cover: string | null;
 }
 export interface LoginInterface {
   email: string;

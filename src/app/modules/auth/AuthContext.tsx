@@ -2,7 +2,8 @@ import React, { createContext, useEffect, useState } from "react";
 import { UserModel } from "./user.interface";
 import { handleValidateEmail, handleValidateEmailCode } from "../helpers/utils";
 import { toast } from "react-toastify";
-import { login } from "../helpers/api";
+import { getUser, login } from "../helpers/api";
+import { json } from "stream/consumers";
 
 interface AuthContextType {
   user: UserModel | null;
@@ -11,7 +12,7 @@ interface AuthContextType {
   loading: boolean;
   emailNotVerified: boolean;
   handleLogin: (email: string, senha: string, code?: string | null) => void;
-  handleLogout: () => void;
+  handleLogout: (value: boolean) => void;
   setEmailNotVerified: (value: boolean) => void;
 }
 
@@ -81,12 +82,33 @@ const AuthContext: React.FC<AuthProviderProps> = ({ children }) => {
         setLoading(false);
       });
   }
+  function handleGetUser() {
+    getUser(token || localStorage.getItem("token"))
+      .then((res) => {
+        console.log(res);
+        setUser(res.data.data);
+        localStorage.setItem("userData", JSON.stringify(res.data.data));
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response && error.response.status === 401) {
+          toast.warning("Sessão expirada, faça o login novamente");
+          handleLogout(true);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
-  function handleLogout() {
-    // AsyncStorage.removeItem("token");
-    // AsyncStorage.removeItem("userData");
-    // setToken("");
-    // setUser(null);
+  function handleLogout(sessionExpired: boolean) {
+    if (!sessionExpired) {
+      toast.success("Logout efetuado com sucesso");
+    }
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+    setToken("");
+    setUser(null);
   }
 
   useEffect(() => {
@@ -101,6 +123,10 @@ const AuthContext: React.FC<AuthProviderProps> = ({ children }) => {
       }
     }
     loadInitialData();
+
+    if (token || localStorage.getItem("token")) {
+      handleGetUser();
+    }
   }, []);
   return (
     <>

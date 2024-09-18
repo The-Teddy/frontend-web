@@ -1,0 +1,45 @@
+#profile-menu-modal {
+  max-width: 300px;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  position: absolute;
+  right: 30px;
+  box-shadow: 0 0 50px 0 #523f691a;
+  .modal-content {
+    margin: 20px 0;
+
+    .profile-email {
+      color: #a1a5b7 !important;
+    }
+    .box-role {
+      padding: 7px 5px;
+      border-top: 1px solid #eff2f5;
+      border-bottom: 1px solid #eff2f5;
+      margin: 10px 0;
+      p {
+        background: #e8fff3;
+        padding: 0;
+        margin: 0;
+        color: #50cd89;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: bolder;
+      }
+    }
+    .profile-button {
+      text-decoration: none;
+      color: #a1a5b7;
+      font-weight: bold;
+      border: none;
+      background: transparent;
+      margin: 5px 5px 0 5px;
+      padding: 5px;
+    }
+    .profile-button:hover {
+      color: #eee346;
+      background: #f2f2f2;
+      border-radius: 8px;
+    }
+  }
+}

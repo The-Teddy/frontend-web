@@ -2,10 +2,12 @@ import React, { useEffect, useState, useContext } from "react";
 import "./TopBar.scss";
 import { Context } from "../../auth/AuthContext";
 import { handleGetEnvVariable } from "../../helpers/utils";
+import ProfileMenuModal from "../../partials/modals/ProfileMenuModal";
 
 const Topbar: React.FC = () => {
   const [viewSideBar, setViewSideBar] = useState<boolean>(false);
   const { user } = useContext(Context);
+  const [openModal, setOpenModal] = useState(false);
 
   function handleViewSideBarAndContent() {
     const sideBar = document.querySelector("#side-bar");
@@ -23,7 +25,6 @@ const Topbar: React.FC = () => {
   }, [viewSideBar]);
   useEffect(() => {
     window.addEventListener("resize", () => {
-      console.log("dentro: ?", viewSideBar);
       if (window.innerWidth > 992) {
         setViewSideBar(false);
       }
@@ -38,6 +39,11 @@ const Topbar: React.FC = () => {
       setViewSideBar(false);
     }
   };
+  const handleClickOutsideProfileMenu = (event: any) => {
+    if (!event.target.closest("#profile-menu-modal")) {
+      setOpenModal(false);
+    }
+  };
 
   useEffect(() => {
     if (viewSideBar) {
@@ -45,9 +51,11 @@ const Topbar: React.FC = () => {
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
+    document.addEventListener("mousedown", handleClickOutsideProfileMenu);
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutsideProfileMenu);
     };
   }, [viewSideBar]);
 
@@ -67,15 +75,21 @@ const Topbar: React.FC = () => {
         <div className="top-bar-right">
           <img
             crossOrigin="anonymous"
-            src={`${
-              user?.logo
-                ? handleGetEnvVariable() + user.logo
-                : "/images/blank.png"
-            }`}
+            onClick={() => setOpenModal(true)}
+            // src={`${
+            //   user?.logo
+            //     ? handleGetEnvVariable() + user.logo
+            //     : "/images/blank.png"
+            // }`}
+            src="/images/blank.png"
             alt=""
           />
         </div>
       </div>
+      <ProfileMenuModal
+        open={openModal}
+        setViewModal={() => setOpenModal(false)}
+      />
     </div>
   );
 };
