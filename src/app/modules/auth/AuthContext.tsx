@@ -65,10 +65,17 @@ const AuthContext: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(res.data.data.data);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("userData", JSON.stringify(res.data.data.data));
+        setEmailNotVerified(false);
       })
       .catch((error) => {
         console.log(error);
-        if (error?.response?.data?.error?.credentialsIsInvalid) {
+        if (error.response?.data?.error?.codeExpired) {
+          setEmailNotVerified(true);
+          return toast.success(
+            "Seu código de verificação expirou. " +
+              error.response?.data?.error?.message
+          );
+        } else if (error?.response?.data?.error?.credentialsIsInvalid) {
           return toast.error("Credenciais inválidas");
         } else if (error?.response?.data?.error?.codeOrEmailInvalid) {
           setEmailNotVerified(true);
@@ -76,6 +83,8 @@ const AuthContext: React.FC<AuthProviderProps> = ({ children }) => {
         } else if (error.response?.data?.error?.emailNotVerified) {
           setEmailNotVerified(true);
           return toast.error(error.response?.data?.error?.message);
+        } else {
+          toast.error(error?.response?.data?.message);
         }
       })
       .finally(() => {
