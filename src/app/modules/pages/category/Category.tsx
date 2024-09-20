@@ -16,10 +16,11 @@ const Category = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [searchParams] = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+  const [categoryFilter, setCategoryFilter] = useState<string>("");
 
   function handleGetCategories() {
     setLoading(true);
-    getAllDataWithPagination(page, limit, token, "category")
+    getAllDataWithPagination(page, limit, categoryFilter, token, "category")
       .then((res) => {
         setTotalItems(res.data.data.totalItems);
         setData(res.data.data.data);

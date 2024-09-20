@@ -4,13 +4,17 @@ import { useSearchParams } from "react-router-dom";
 
 interface PaginationProps<T> {
   total: number;
+  resetCurrentPage: boolean;
+  searchTerm: string;
   itemsPerPage?: number;
   handleCurrentPage: (page: number) => void;
 }
 
 const Pagination = <T extends any>({
+  resetCurrentPage,
   total,
   itemsPerPage = 10,
+  searchTerm,
   handleCurrentPage,
 }: PaginationProps<T>) => {
   const totalPages = Math.ceil(total / itemsPerPage);
@@ -20,7 +24,6 @@ const Pagination = <T extends any>({
   );
 
   const handleUpdateQuery = (page: string) => {
-    console.log("page atual: ", page);
     setSearchParams({ page: page });
   };
 
@@ -68,6 +71,21 @@ const Pagination = <T extends any>({
     handleCurrentPage(page);
   };
 
+  useEffect(() => {
+    if (resetCurrentPage) {
+      setCurrentPage(1);
+    }
+  }, [resetCurrentPage]);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setCurrentPage(1);
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchTerm]);
   return (
     <div>
       <div className="page-info">

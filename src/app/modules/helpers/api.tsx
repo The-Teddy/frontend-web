@@ -89,12 +89,16 @@ export function updateCategory(data: UpdateCategoryInterface, token: string) {
 export function getAllDataWithPagination(
   page: number,
   limit: number = 10,
+  searchTerm: string,
   token: string,
   url: string
 ) {
-  return axios.get(`${api}/${url}?page=${page}&limit=${limit}`, {
-    headers: handleGetHeaders("application/json", token),
-  });
+  return axios.get(
+    `${api}/${url}?page=${page}&limit=${limit}&searchTerm=${searchTerm}`,
+    {
+      headers: handleGetHeaders("application/json", token),
+    }
+  );
 }
 export function getOneById(id: number, token: string, url: string) {
   return axios.get(`${api}/${url}?id=${id}`, {

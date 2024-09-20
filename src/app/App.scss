@@ -25,7 +25,10 @@ label {
     cursor: pointer;
   }
 }
-
+.title {
+  font-size: 23px;
+  font-weight: 600;
+}
 #app-content {
   margin-left: 200px;
   margin-top: 75px;
@@ -36,10 +39,7 @@ label {
     margin-left: 0;
     transition: 1s all ease;
   }
-  .title {
-    font-size: 23px;
-    font-weight: 600;
-  }
+
   .icon-button {
     cursor: pointer;
   }

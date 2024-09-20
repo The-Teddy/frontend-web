@@ -94,7 +94,6 @@ const AuthContext: React.FC<AuthProviderProps> = ({ children }) => {
   function handleGetUser() {
     getUser(token || localStorage.getItem("token"))
       .then((res) => {
-        console.log(res);
         setUser(res.data.data);
         localStorage.setItem("userData", JSON.stringify(res.data.data));
       })

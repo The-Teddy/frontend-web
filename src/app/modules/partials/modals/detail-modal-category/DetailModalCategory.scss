@@ -1,0 +1,18 @@
+#detail-modal {
+  .box-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    button {
+      width: 45%;
+      border-radius: 8px;
+      height: 40px;
+      margin: 25px 0 10px 0;
+    }
+    .back {
+      background: #fff;
+      color: #3f4254;
+      border: 2px solid #3f4254;
+    }
+  }
+}

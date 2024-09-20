@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
-import { Box, Modal } from "@mui/material";
-import "./Modals.scss";
-import { Context } from "../../auth/AuthContext";
+import { Context } from "../../../auth/AuthContext";
 import { Link } from "react-router-dom";
+import "./ProfileMenuModal.scss";
 
 interface ProfimeMenuModalInterface {
   open: boolean;

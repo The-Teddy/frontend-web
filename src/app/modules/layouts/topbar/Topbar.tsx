@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./TopBar.scss";
 import { Context } from "../../auth/AuthContext";
-import { handleGetEnvVariable } from "../../helpers/utils";
-import ProfileMenuModal from "../../partials/modals/ProfileMenuModal";
+import ProfileMenuModal from "../../partials/modals/profile-menu-modal/ProfileMenuModal";
 
 const Topbar: React.FC = () => {
   const [viewSideBar, setViewSideBar] = useState<boolean>(false);
