@@ -59,6 +59,11 @@ const Login = () => {
                   setEmailCode(handleIsNumber(event.target.value)),
                   setViewErrorCode(false),
                 ]}
+                onKeyDown={(e) =>
+                  e.key === "Enter"
+                    ? handleLogin(email, password, emailCode)
+                    : ""
+                }
                 autoCapitalize="none"
                 maxLength={6}
               />
