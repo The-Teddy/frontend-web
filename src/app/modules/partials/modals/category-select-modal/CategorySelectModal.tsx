@@ -56,7 +56,12 @@ const CategorySelectModal: React.FC<CategorySelectModalInterface> = ({
       });
   }
   function handleCloseModal(event: any) {
-    if (event.target.className.includes("MuiBackdrop-root")) {
+    const className = event.target.className;
+
+    if (
+      typeof className === "string" &&
+      className.includes("MuiBackdrop-root")
+    ) {
       props.setViewModal();
       setSearchTerm("");
     }

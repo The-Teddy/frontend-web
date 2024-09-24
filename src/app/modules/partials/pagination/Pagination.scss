@@ -10,12 +10,12 @@
     background-color: #007bff;
     color: white;
   }
-  .previous-button,
-  .next-button {
-    @media (max-width: 600px) {
-      display: none !important;
-    }
-  }
+  // .previous-button,
+  // .next-button {
+  //   @media (max-width: 600px) {
+  //     display: none !important;
+  //   }
+  // }
 }
 
 .pagination button {
@@ -24,6 +24,10 @@
   border: none;
   background-color: #f0f0f0;
   cursor: pointer;
+  @media (max-width: 400px) {
+    margin: 0 3px !important;
+    padding: 4px 8px !important;
+  }
 }
 
 .pagination button.active {

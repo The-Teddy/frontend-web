@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./Pagination.scss";
 import { useSearchParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faAnglesRight,
+  faAnglesLeft,
+  faAngleLeft,
+  faAngleRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 interface PaginationProps<T> {
   total: number;
-  resetCurrentPage: boolean;
-  searchTerm: string;
+  resetCurrentPage?: boolean;
+  searchTerm?: string;
   itemsPerPage?: number;
   handleCurrentPage: (page: number) => void;
 }
@@ -24,7 +31,9 @@ const Pagination = <T extends any>({
   );
 
   const handleUpdateQuery = (page: string) => {
-    setSearchParams({ page: page });
+    if (!resetCurrentPage) {
+      setSearchParams({ page: page });
+    }
   };
 
   const generatePageNumbers = () => {
@@ -36,7 +45,6 @@ const Pagination = <T extends any>({
     if (endPage - startPage + 1 < maxPages) {
       startPage = Math.max(1, endPage - maxPages + 1);
     }
-
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
@@ -65,8 +73,8 @@ const Pagination = <T extends any>({
     handleCurrentPage(1);
   };
   const handleLast = () => {
-    setCurrentPage(generatePageNumbers().length + 1);
-    const page = generatePageNumbers().length + 1;
+    setCurrentPage(totalPages);
+    const page = totalPages;
     handleUpdateQuery(String(page));
     handleCurrentPage(page);
   };
@@ -79,13 +87,16 @@ const Pagination = <T extends any>({
 
   useEffect(() => {
     const timerId = setTimeout(() => {
-      setCurrentPage(1);
+      if (searchTerm && searchTerm?.length > 1) {
+        setCurrentPage(1);
+      }
     }, 500);
 
     return () => {
       clearTimeout(timerId);
     };
   }, [searchTerm]);
+
   return (
     <div>
       <div className="page-info">
@@ -93,14 +104,14 @@ const Pagination = <T extends any>({
       </div>
       <div className="pagination">
         <button onClick={handleFirst} disabled={currentPage === 1}>
-          Primeiro
+          <FontAwesomeIcon icon={faAnglesLeft} />{" "}
         </button>
         <button
           className="previous-button"
           onClick={handlePrevious}
           disabled={currentPage === 1}
         >
-          Anterior
+          <FontAwesomeIcon icon={faAngleLeft} />{" "}
         </button>
 
         {generatePageNumbers().map((page) => (
@@ -122,10 +133,10 @@ const Pagination = <T extends any>({
           onClick={handleNext}
           disabled={currentPage === totalPages}
         >
-          Próximo
+          <FontAwesomeIcon icon={faAngleRight} />
         </button>
         <button onClick={handleLast} disabled={currentPage === totalPages}>
-          Último
+          <FontAwesomeIcon icon={faAnglesRight} />
         </button>
       </div>
     </div>

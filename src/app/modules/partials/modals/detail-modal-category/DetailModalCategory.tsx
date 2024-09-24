@@ -20,7 +20,6 @@ const DetailModalCategory: React.FC<DetailModalInterface> = ({ ...props }) => {
             <button onClick={props.setCloseModal} className="back">
               Voltar
             </button>
-            {/* <button onClick={props.setCloseModalAndCategory}>Selecionar</button> */}
             <DefaultSaveButton
               loading={false}
               title="Selecinar"
