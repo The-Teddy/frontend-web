@@ -66,6 +66,7 @@ const Register = () => {
             onChange={(e) => {
               setName(e.target.value);
             }}
+            onKeyDown={(e) => (e.key === "Enter" ? handleCreateUser() : "")}
           />
         </label>
         <label htmlFor="" className="w-100 text-start ">
@@ -79,6 +80,7 @@ const Register = () => {
             onChange={(e) => {
               setEmail(e.target.value);
             }}
+            onKeyDown={(e) => (e.key === "Enter" ? handleCreateUser() : "")}
           />
         </label>
         <label htmlFor="" className="w-100 text-start mt-3">
@@ -92,6 +94,7 @@ const Register = () => {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              onKeyDown={(e) => (e.key === "Enter" ? handleCreateUser() : "")}
             />
             {viewPassword ? (
               <i
@@ -116,15 +119,10 @@ const Register = () => {
             onChange={(e) => {
               setConfirmPassword(e.target.value);
             }}
+            onKeyDown={(e) => (e.key === "Enter" ? handleCreateUser() : "")}
           />
         </label>
         <div>
-          {/* <button
-            className="btn-dark btn w-100 mt-3"
-            onClick={() => handleCreateUser()}
-          >
-            Cadastrar
-          </button> */}
           <DefaultSaveButton
             title="Cadastrar"
             loading={loading}

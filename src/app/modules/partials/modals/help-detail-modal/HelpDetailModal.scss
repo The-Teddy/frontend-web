@@ -1,0 +1,51 @@
+#help-detail-modal {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%, -10%);
+  background: #fff;
+  box-shadow: 0 0 50px 0 #523f691a;
+  width: 90%;
+  max-width: 500px;
+  padding-bottom: 30px;
+  border-radius: 8px;
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 0;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #aaafb6;
+    border-radius: 10px;
+  }
+  .content {
+    max-height: 200px;
+    padding: 10px 15px;
+    overflow-y: auto;
+    .text {
+      text-align: justify;
+    }
+  }
+  .title {
+    border-bottom: 2px solid #f2f2f2;
+    margin: 0 10px 10px 10px;
+
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+
+    svg {
+      cursor: pointer;
+    }
+    svg:hover {
+      scale: 0.9;
+      opacity: 0.75;
+    }
+  }
+}

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import DefaultBackButton from "../../partials/buttons/DefaultBackButton";
 import DefaultSaveButton from "../../partials/buttons/DefaultSaveButton";
-import { createCategory, getOneById, updateCategory } from "../../helpers/api";
+import { getOneById, updateCategory } from "../../helpers/api";
 import { Context } from "../../auth/AuthContext";
 import { toast } from "react-toastify";
 import {
@@ -10,7 +10,7 @@ import {
   UpdateCategoryInterface,
 } from "./CategoryInterface";
 import { Load } from "../../partials/Spinner";
-import { FormControlLabel, Switch } from "@mui/material";
+import { Switch } from "@mui/material";
 
 const UpdateCategory = () => {
   const [id, setId] = useState<number | null>(null);
