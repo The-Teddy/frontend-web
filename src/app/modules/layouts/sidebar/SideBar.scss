@@ -22,6 +22,9 @@
     padding-top: 25px;
     background: #181c32;
     height: 100%;
+    span {
+      color: #fff;
+    }
     a {
       color: #fff;
       display: flex;
@@ -36,7 +39,7 @@
       text-decoration: none;
     }
     a:hover {
-      background: #1a1a27;
+      background: #1a1a27 !important;
     }
   }
 }
@@ -47,4 +50,7 @@
 .active-link {
   background: #1a1a27;
   color: #6495ed !important;
+  span {
+    color: #6495ed !important;
+  }
 }

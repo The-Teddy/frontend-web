@@ -2,4 +2,40 @@
   select {
     cursor: pointer;
   }
+
+  #tab-nav {
+    display: flex;
+
+    .tab-button {
+      transition: 0.5s all ease;
+      padding: 5px 30px;
+      border: 2px solid #fff;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      background: #9a9a9a;
+      color: #fff;
+      margin: 0 15px;
+      font-weight: bolder;
+    }
+    :first-child {
+      margin: 0 15px 0 0;
+    }
+    .active-tab {
+      transition: 0.5s all ease;
+      background: #fff;
+      color: #6495ed;
+      border: 2px solid #6495ed;
+      border-bottom: none;
+    }
+  }
+  .tab-content {
+    opacity: 0;
+    transition: opacity 1s ease;
+    visibility: hidden; /* Começa invisível */
+  }
+
+  .tab-content.active {
+    opacity: 1;
+    visibility: visible; /* Torna-se visível quando ativo */
+  }
 }
