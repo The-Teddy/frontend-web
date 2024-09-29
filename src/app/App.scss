@@ -54,6 +54,9 @@ label {
     font-size: 20px;
     font-weight: 500;
   }
+  button[disabled] {
+    opacity: 0.5 !important;
+  }
 }
 .background-default {
   background: #fff;

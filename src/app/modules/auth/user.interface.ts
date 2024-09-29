@@ -1,3 +1,5 @@
+import { ProviderInterface } from "../interfaces/ProviderInterfaces";
+
 export interface UserModel {
   id: Buffer;
   name: string;
@@ -6,6 +8,7 @@ export interface UserModel {
   emailVerified: boolean;
   createdAt: Date;
   isActive: boolean;
+  business: ProviderInterface;
 }
 export interface LoginInterface {
   email: string;

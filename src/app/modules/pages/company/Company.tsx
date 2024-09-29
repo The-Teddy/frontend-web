@@ -1,89 +1,80 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../../auth/AuthContext";
-import CategorySelectModal from "../../partials/modals/category-select-modal/CategorySelectModal";
 import { Load } from "../../partials/Spinner";
 import "./Company.scss";
-import DefaultQuestionIcon from "../../partials/default-question-icon/DefaultQuestionIcon";
-import HelpDetailModal from "../../partials/modals/help-detail-modal/HelpDetailModal";
 import ContentIdentity from "../../partials/tabs-content/ContentIdentity";
 import ContentProfile from "../../partials/tabs-content/ContentProfile";
 import ContentHours from "../../partials/tabs-content/ContentHours";
+import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { useSearchParams } from "react-router-dom";
 
 const Company = () => {
-  const { token } = useContext(Context);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { user } = useContext(Context);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const tabs = [
-    { id: "identity", label: "Identidade", content: <ContentIdentity /> },
+    {
+      id: "identity",
+      label: "Identidade",
+      content: (
+        <ContentIdentity setTabView={(tab: string) => setActiveTab(tab)} />
+      ),
+    },
     { id: "profile", label: "Perfil", content: <ContentProfile /> },
     { id: "hours", label: "Horários", content: <ContentHours /> },
   ];
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 
   const handleTabClick = (id: string) => {
-    setActiveTab(id);
+    if (user?.business) {
+      setActiveTab(id);
+    } else {
+      toast.warning(
+        "Complete as informações na aba 'Identidade' para acessar as demais configurações"
+      );
+    }
   };
 
-  // function handleViewTabs(
-  //   event: React.MouseEvent<HTMLButtonElement>,
-  //   id: string
-  // ) {
-  //   const activeButton = document.querySelector(".active-tab");
-  //   if (activeButton) {
-  //     activeButton?.classList.remove("active-tab");
-  //   }
+  useEffect(() => {
+    const searchTab = searchParams.get("tab");
 
-  //   const target = event.currentTarget as HTMLElement;
-  //   target.classList.add("active-tab");
-
-  //   const activeContent = document.getElementById(
-  //     idContentActive
-  //   ) as HTMLElement;
-  //   if (activeContent) {
-  //     activeContent.style.display = "none";
-  //   }
-
-  //   setIdContentActive(id);
-
-  //   const activateContent = document.getElementById(id) as HTMLElement;
-  //   if (activateContent) {
-  //     activateContent.style.display = "block";
-  //   }
-  // }
+    const existingTab = tabs.some((tab) => tab.id === searchTab);
+    if (existingTab && searchTab) {
+      setActiveTab(searchTab);
+      setSearchParams({});
+    }
+  }, [searchParams.get("tab")]);
   return (
     <div id="company" className="background-default">
       <p className="title">Gerenciar Empresa</p>
 
-      {loading ? (
-        <div className="load-center">
-          <Load />
+      <nav aria-label="Navegação de configurações" id="tab-nav">
+        {tabs.map((item, index) => (
+          <button
+            key={index}
+            className={`tab-button ${
+              activeTab === item.id ? "active-tab" : ""
+            }`}
+            onClick={() => handleTabClick(item.id)}
+          >
+            {item.label}
+            {!user?.business && item.id !== "identity" ? (
+              <FontAwesomeIcon icon={faLock} />
+            ) : null}
+          </button>
+        ))}
+      </nav>
+      {tabs.map((item) => (
+        <div
+          className={`tab-content ${activeTab === item.id ? "active" : ""}`} // Aplica a classe active
+          key={item.id}
+          style={{ display: activeTab === item.id ? "block" : "none" }}
+        >
+          {item.content}
         </div>
-      ) : (
-        <>
-          <nav aria-label="Navegação de configurações" id="tab-nav">
-            {tabs.map((item, index) => (
-              <button
-                key={index}
-                className={`tab-button ${
-                  activeTab === item.id ? "active-tab" : ""
-                }`}
-                onClick={() => handleTabClick(item.id)}
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
-          {tabs.map((item) => (
-            <div
-              className={`tab-content ${activeTab === item.id ? "active" : ""}`} // Aplica a classe active
-              key={item.id}
-              style={{ display: activeTab === item.id ? "block" : "none" }}
-            >
-              {item.content}
-            </div>
-          ))}
-        </>
-      )}
+      ))}
     </div>
   );
 };

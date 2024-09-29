@@ -13,6 +13,7 @@ interface AuthContextType {
   emailNotVerified: boolean;
   handleLogin: (email: string, senha: string, code?: string | null) => void;
   handleLogout: (value: boolean) => void;
+  handleGetUser: () => void;
   setEmailNotVerified: (value: boolean) => void;
 }
 
@@ -24,6 +25,7 @@ const defaultContextValue: AuthContextType = {
   emailNotVerified: false,
   handleLogin: () => {},
   handleLogout: () => {},
+  handleGetUser: () => {},
   setEmailNotVerified: () => {},
 };
 interface AuthProviderProps {
@@ -94,6 +96,7 @@ const AuthContext: React.FC<AuthProviderProps> = ({ children }) => {
   function handleGetUser() {
     getUser(token || localStorage.getItem("token"))
       .then((res) => {
+        console.log(res.data.data);
         setUser(res.data.data);
         localStorage.setItem("userData", JSON.stringify(res.data.data));
       })
@@ -148,6 +151,7 @@ const AuthContext: React.FC<AuthProviderProps> = ({ children }) => {
           handleLogin,
           handleLogout,
           setEmailNotVerified,
+          handleGetUser,
         }}
       >
         {children}

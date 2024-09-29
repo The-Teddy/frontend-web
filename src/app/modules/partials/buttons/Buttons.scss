@@ -24,12 +24,14 @@
 
 .default-save-button {
   background: #6495ed;
-  color: #fff;
   border: none;
   border-radius: 8px;
   height: 45px;
   width: 100%;
   margin: 25px 0 10px 0;
+  span {
+    color: #fff !important;
+  }
 }
 .default-save-button:hover {
   opacity: 0.75;

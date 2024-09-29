@@ -8,15 +8,12 @@ import {
   CreateCategoryInterface,
   UpdateCategoryInterface,
 } from "../pages/category/CategoryInterface";
+import { ContentIdentityInterface } from "../interfaces/ProviderInterfaces";
 
 const api = process.env.REACT_APP_API_URL;
 const token = localStorage.getItem("token");
 
-const headers = {
-  "Content-Type": "application/json",
-  Accept: "application/json",
-  authorization: token,
-};
+
 
 // export function createUser(data: any) {
 //   return axios.post(`${api}/user/create`, data, { headers });
@@ -102,6 +99,17 @@ export function getAllDataWithPagination(
 }
 export function getOneById(id: number, token: string, url: string) {
   return axios.get(`${api}/${url}?id=${id}`, {
+    headers: handleGetHeaders("application/json", token),
+  });
+}
+
+//Providers
+
+export function createContentIdentity(
+  data: ContentIdentityInterface,
+  token: string
+) {
+  return axios.post(`${api}/provider/create`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }

@@ -4,6 +4,7 @@ import { Context } from "../modules/auth/AuthContext";
 import SideBar from "../modules/layouts/sidebar/SideBar";
 import Topbar from "../modules/layouts/topbar/Topbar";
 import { Load } from "../modules/partials/Spinner";
+import ManageWarning from "../modules/partials/manage-warning/ManageWarning";
 
 interface Props {
   children: React.ReactNode;
@@ -42,7 +43,11 @@ const PrivateRoute = ({ children }: Props): React.ReactNode => {
     <>
       <Topbar />
       <SideBar />
-      <div id="app-content">{children}</div>
+      <div id="app-content">
+        <ManageWarning />
+
+        {children}
+      </div>
     </>
   ) : (
     <Navigate to={"/login"} />

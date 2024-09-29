@@ -50,22 +50,32 @@ function handleGetHeaders(contentType: string, token?: string | null) {
   return headers;
 }
 
-function handleMask(v: any) {
-  v = v.replace(/\D/g, "");
+function handleMask(value: string): string {
+  // Remove todos os caracteres não numéricos
+  value = value.replace(/\D/g, "");
 
-  if (v.length <= 11) {
-    v = v.replace(/(\d{3})(\d)/, "$1.$2");
-    v = v.replace(/(\d{3})(\d)/, "$1.$2");
-    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-  } else {
-    v = v.replace(/^(\d{2})(\d)/, "$1.$2");
-    v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
-    v = v.replace(/\.(\d{3})(\d)/, ".$1/$2");
-    v = v.replace(/(\d{4})(\d)/, "$1-$2");
+  // Limita o valor a 14 caracteres (tamanho máximo de um CNPJ)
+  if (value.length > 14) {
+    value = value.substring(0, 14);
   }
 
-  return v;
+  // Aplica a máscara para CPF (11 dígitos) ou CNPJ (14 dígitos)
+  if (value.length <= 11) {
+    // CPF: 000.000.000-00
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d)/, "$1.$2");
+    value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  } else {
+    // CNPJ: 00.000.000/0000-00
+    value = value.replace(/^(\d{2})(\d)/, "$1.$2");
+    value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+    value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
+    value = value.replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+  }
+
+  return value;
 }
+
 function handleMaskCnpj(v: any) {
   v = v.replace(/\D/g, "");
 
@@ -153,6 +163,78 @@ function handleReponse(type: string, data: any) {
     }
   }
 }
+function handleValidateCPF(cpf: string): boolean {
+  cpf = cpf.replace(/\D/g, "");
+
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+  let sum = 0;
+  let remainder;
+
+  for (let i = 1; i <= 9; i++) {
+    sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+  }
+
+  remainder = (sum * 10) % 11;
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  if (remainder !== parseInt(cpf.substring(9, 10))) return false;
+
+  sum = 0;
+  for (let i = 1; i <= 10; i++) {
+    sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+  }
+
+  remainder = (sum * 10) % 11;
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  return remainder === parseInt(cpf.substring(10, 11));
+}
+
+function handleValidateCNPJ(cnpj: string): boolean {
+  cnpj = cnpj.replace(/\D/g, "");
+
+  if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false;
+
+  let size = cnpj.length - 2;
+  let numbers = cnpj.substring(0, size);
+  let digits = cnpj.substring(size);
+  let sum = 0;
+  let pos = size - 7;
+
+  for (let i = size; i >= 1; i--) {
+    sum += parseInt(numbers.charAt(size - i)) * pos--;
+    if (pos < 2) pos = 9;
+  }
+
+  let remainder = sum % 11;
+  let checkDigit = remainder < 2 ? 0 : 11 - remainder;
+  if (checkDigit !== parseInt(digits.charAt(0))) return false;
+
+  size += 1;
+  numbers = cnpj.substring(0, size);
+  sum = 0;
+  pos = size - 7;
+
+  for (let i = size; i >= 1; i--) {
+    sum += parseInt(numbers.charAt(size - i)) * pos--;
+    if (pos < 2) pos = 9;
+  }
+
+  remainder = sum % 11;
+  checkDigit = remainder < 2 ? 0 : 11 - remainder;
+  return checkDigit === parseInt(digits.charAt(1));
+}
+
+function handleValidateDocument(document: string): boolean {
+  document = document.replace(/\D/g, "");
+
+  if (document.length === 11) {
+    return handleValidateCPF(document);
+  } else if (document.length === 14) {
+    return handleValidateCNPJ(document);
+  }
+
+  return false;
+}
 
 export {
   handleConverterId,
@@ -169,4 +251,5 @@ export {
   handleConvertDateAndTime,
   handleValidateDate,
   handleReconvertDate,
+  handleValidateDocument,
 };
