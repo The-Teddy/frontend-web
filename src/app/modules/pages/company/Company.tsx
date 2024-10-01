@@ -23,7 +23,7 @@ const Company = () => {
       ),
     },
     { id: "profile", label: "Perfil", content: <ContentProfile /> },
-    { id: "hours", label: "Horários", content: <ContentHours /> },
+    // { id: "hours", label: "Horários", content: <ContentHours /> },
   ];
   const [activeTab, setActiveTab] = useState(tabs[0].id);
 

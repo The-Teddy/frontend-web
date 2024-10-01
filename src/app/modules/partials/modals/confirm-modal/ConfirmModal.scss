@@ -1,0 +1,44 @@
+#confirm-modal {
+  margin: 100px auto;
+  width: 90%;
+  max-width: 500px;
+  height: 300px;
+
+  .modal-content {
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 0;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #aaafb6;
+      border-radius: 10px;
+    }
+    .message {
+      text-align: justify;
+      font-weight: 500;
+      color: red;
+      overflow-y: auto;
+      max-height: 100px;
+      padding: 0 10px;
+    }
+    .box-button {
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        width: 48%;
+        height: 40px;
+        border: none;
+        border-radius: 8px;
+      }
+    }
+  }
+}

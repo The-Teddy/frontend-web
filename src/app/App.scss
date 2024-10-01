@@ -31,6 +31,7 @@ label {
 .title {
   font-size: 23px;
   font-weight: 600;
+  text-align: center;
 }
 #app-content {
   margin-left: 200px;
@@ -57,6 +58,24 @@ label {
   button[disabled] {
     opacity: 0.5 !important;
   }
+}
+.save {
+  background: #6495ed !important;
+  color: #fff !important;
+  font-weight: 500;
+}
+.back {
+  background: #fff !important;
+  border: 2px solid red !important;
+  color: red !important;
+  font-weight: 500;
+}
+.back:hover {
+  background: red !important;
+  color: #fff !important;
+}
+.save:hover {
+  opacity: 0.75 !important;
 }
 .background-default {
   background: #fff;

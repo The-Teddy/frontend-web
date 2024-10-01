@@ -8,6 +8,7 @@ import { Context } from "../../auth/AuthContext";
 import { ContentIdentityInterface } from "../../interfaces/ProviderInterfaces";
 import { toast } from "react-toastify";
 import { handleMask, handleValidateDocument } from "../../helpers/utils";
+import ConfirmModal from "../modals/confirm-modal/ConfirmModal";
 
 interface ContentIInterface {
   setTabView: (value: string) => void;
@@ -24,7 +25,7 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
   const [textHelpDetailModal, setTextHelpDetailModal] = useState<string>("");
   const [viewHelpDetailModal, setViewHelpDetailModal] =
     useState<boolean>(false);
-
+  const [viewConfirmModal, setViewConfirmModal] = useState<boolean>(false);
   const urlRegex: RegExp = /^(?=.{3,})[a-zA-Z0-9_-]+$/;
 
   function handleViewHelpDetailModal(title: string, text: string) {
@@ -41,25 +42,6 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
       category,
       url,
     };
-
-    if (businessName.length < 3) {
-      return toast.warning(
-        "O nome comercial é obrigatório e deve ter pelo menos 3 caracteres. Exemplo: 'WL Barber'."
-      );
-    }
-    if (!handleValidateDocument(document)) {
-      return toast.warning("Insira um CPF/CNPJ válido, por favor");
-    }
-    if (!urlRegex.test(url)) {
-      return toast.warning(
-        "Insira uma URL válida. Evite caracteres especiais e utilize apenas letras, números, sublinhados e hífens."
-      );
-    }
-    if (category === "Selecione...") {
-      return toast.warning(
-        "Por favor, escolha o segmento adequado para a sua empresa."
-      );
-    }
 
     setLoadingButton(true);
     createContentIdentity(data, token)
@@ -84,6 +66,27 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
       .finally(() => {
         setLoadingButton(false);
       });
+  }
+  function handleValidateData() {
+    if (businessName.length < 3) {
+      return toast.warning(
+        "O nome comercial é obrigatório e deve ter pelo menos 3 caracteres. Exemplo: 'WL Barber'."
+      );
+    }
+    if (!handleValidateDocument(document)) {
+      return toast.warning("Insira um CPF/CNPJ válido, por favor");
+    }
+    if (!urlRegex.test(url)) {
+      return toast.warning(
+        "Insira uma URL válida. Evite caracteres especiais e utilize apenas letras, números, sublinhados e hífens."
+      );
+    }
+    if (category === "Selecione...") {
+      return toast.warning(
+        "Por favor, escolha o segmento adequado para a sua empresa."
+      );
+    }
+    setViewConfirmModal(true);
   }
   return (
     <>
@@ -181,6 +184,13 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
       <DefaultSaveButton
         loading={loadingButton}
         title="Salvar"
+        handleSubmit={handleValidateData}
+      />
+      <ConfirmModal
+        message="Após salvar informações críticas, como a identidade, você poderá realizar apenas uma correção no período de 30 dias. Após essa correção, qualquer correção adicional necessitará da aprovação dos administradores."
+        title="Confirmar cadastro da empresa?"
+        view={viewConfirmModal}
+        setView={() => setViewConfirmModal(false)}
         handleSubmit={handleSaveData}
       />
     </>
