@@ -1,0 +1,37 @@
+#profile {
+  .background-default {
+    padding: 20px;
+  }
+  .first-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    img {
+      height: 160px;
+      width: 160px;
+      border-radius: 8px;
+    }
+    .name {
+      text-align: start;
+      font-weight: 600;
+      color: #3f4254 !important;
+    }
+    .role-and-email {
+      display: flex;
+      gap: 20px;
+      span {
+        color: #b5b5c3 !important;
+        font-weight: 500;
+        svg {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+  .info-user {
+    border: 2px dashed #dcdcdc;
+    border-radius: 8px;
+    padding: 10px;
+  }
+}

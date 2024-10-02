@@ -16,6 +16,7 @@ import CategoryDetail from "../modules/pages/category/CategoryDetail";
 import PrivateAndAdminstratorRoute from "./PrivateAndAdminstratorRoute";
 import PrivateAndSuperAdminstratorRoute from "./PrivateAndSuperAdminstratorRoute";
 import UpdateCategory from "../modules/pages/category/UpdateCategory";
+import Profile from "../modules/pages/profile/Profile";
 
 const Routers = () => {
   return (
@@ -114,6 +115,14 @@ const Routers = () => {
             <PrivateAndAdminstratorRoute>
               <UpdateCategory />
             </PrivateAndAdminstratorRoute>
+          }
+        ></Route>
+        <Route
+          path="/perfil"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
           }
         ></Route>
       </Routes>

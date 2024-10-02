@@ -6,6 +6,7 @@ interface ConfirmModalInterface {
   view: boolean;
   message?: string;
   title: string;
+  loading: boolean;
   setView: () => void;
   handleSubmit: () => void;
 }
@@ -21,7 +22,16 @@ const ConfirmModal: React.FC<ConfirmModalInterface> = ({ ...props }) => {
             Cancelar
           </button>
           <button className="save" onClick={props.handleSubmit}>
-            Confirmar
+            {!props.loading && (
+              <span className="indicator-label" style={{ color: "#fff" }}>
+                Confirmar
+              </span>
+            )}
+            {props.loading && (
+              <span className="indicator-progress" style={{ display: "block" }}>
+                <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
+              </span>
+            )}
           </button>
         </div>
       </Box>

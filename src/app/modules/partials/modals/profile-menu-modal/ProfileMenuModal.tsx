@@ -27,7 +27,11 @@ const ProfileMenuModal: React.FC<ProfimeMenuModalInterface> = ({
             <div className="box-role">
               <p>{user?.role}</p>
             </div>
-            <Link to="/perfil" className="profile-button">
+            <Link
+              to="/perfil"
+              className="profile-button"
+              onClick={props.setViewModal}
+            >
               Perfil
             </Link>
             <button

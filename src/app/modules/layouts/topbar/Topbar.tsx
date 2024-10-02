@@ -39,7 +39,10 @@ const Topbar: React.FC = () => {
     }
   };
   const handleClickOutsideProfileMenu = (event: any) => {
-    if (!event.target.closest("#profile-menu-modal")) {
+    if (
+      !event.target.closest("#profile-menu-modal") &&
+      event.target.className !== "img-profile-button"
+    ) {
       setOpenModal(false);
     }
   };
@@ -50,13 +53,14 @@ const Topbar: React.FC = () => {
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-    document.addEventListener("mousedown", handleClickOutsideProfileMenu);
-
+    if (openModal) {
+      document.addEventListener("mousedown", handleClickOutsideProfileMenu);
+    }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("mousedown", handleClickOutsideProfileMenu);
     };
-  }, [viewSideBar]);
+  }, [viewSideBar, openModal]);
 
   return (
     <div id="top-bar">
@@ -74,7 +78,8 @@ const Topbar: React.FC = () => {
         <div className="top-bar-right">
           <img
             crossOrigin="anonymous"
-            onClick={() => setOpenModal(true)}
+            onClick={() => setOpenModal(!openModal)}
+            className="img-profile-button"
             // src={`${
             //   user?.logo
             //     ? handleGetEnvVariable() + user.logo

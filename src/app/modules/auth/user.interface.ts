@@ -6,6 +6,7 @@ export interface UserModel {
   email: string;
   role: string;
   emailVerified: boolean;
+  birthDate: Date;
   createdAt: Date;
   isActive: boolean;
   business: ProviderInterface;
@@ -18,4 +19,8 @@ export interface RecoveryPasswordInterface {
   email: string;
   password: string;
   codeEmail: string | null;
+}
+export interface updateDataUserInterface {
+  name: string;
+  birthDate: Date | string | null;
 }

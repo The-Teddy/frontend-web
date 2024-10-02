@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@types/react-burger-menu": "^2.8.7",
+    "@types/react-input-mask": "^3.0.5",
     "@types/react-router-dom": "^5.3.3"
   }
 }

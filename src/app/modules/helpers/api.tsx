@@ -3,6 +3,7 @@ import { handleGetHeaders } from "./utils";
 import {
   LoginInterface,
   RecoveryPasswordInterface,
+  updateDataUserInterface,
 } from "../auth/user.interface";
 import {
   CreateCategoryInterface,
@@ -12,8 +13,6 @@ import { ContentIdentityInterface } from "../interfaces/ProviderInterfaces";
 
 const api = process.env.REACT_APP_API_URL;
 const token = localStorage.getItem("token");
-
-
 
 // export function createUser(data: any) {
 //   return axios.post(`${api}/user/create`, data, { headers });
@@ -60,6 +59,11 @@ export function uploadCoverUser(data: FormData, token: string) {
 //users
 export function getUser(token: string | null) {
   return axios.get(`${api}/user`, {
+    headers: handleGetHeaders("application/json", token),
+  });
+}
+export function updateDataUser(data: updateDataUserInterface, token: string) {
+  return axios.put(`${api}/user/update-data`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }
