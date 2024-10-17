@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "../helpers/api";
 import { toast } from "react-toastify";
 import DefaultSaveButton from "../partials/buttons/DefaultSaveButton";
+import { handleValidateEmail } from "../helpers/utils";
 
 const Register = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,14 +14,11 @@ const Register = () => {
   const [viewPassword, setViewPassword] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const emailRegex: RegExp =
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-
   function handleCreateUser() {
     if (name.length < 3) {
       return toast.warning("Insira o seu nome!");
     }
-    if (!emailRegex.test(email)) {
+    if (!handleValidateEmail(email)) {
       return toast.warning("Insira um email válido!");
     }
     if (password.length < 8) {

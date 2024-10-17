@@ -9,7 +9,7 @@ function handleConverterId(binaryId: Buffer | undefined): string {
   )}-${hex?.slice(16, 4)}-${hex?.slice(20)}`;
   return uuid;
 }
-function handleValidateEmail(email: string) {
+function handleValidateEmail(email: string): boolean {
   const emailRegex: RegExp =
     /^(?=[a-zA-Z0-9._%+-]{1,256}@)(?!@)(?!.*@.*@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -291,6 +291,17 @@ function handleIsValidDate(dateString: string): boolean {
 function handleIsLeapYear(year: number): boolean {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
+function handleError(error: any) {
+  if (error.response && error.response.data) {
+    if (Array.isArray(error.response.data.message)) {
+      toast.error(error.response.data.message.join(" "));
+    } else if (typeof error.response.data.message === "string") {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error("Ocorreu um erro inesperado.");
+    }
+  }
+}
 
 export {
   handleConverterId,
@@ -310,4 +321,5 @@ export {
   handleValidateDocument,
   handleIsValidDate,
   convertDateToISO,
+  handleError,
 };

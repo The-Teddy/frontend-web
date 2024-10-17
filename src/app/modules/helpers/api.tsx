@@ -4,6 +4,7 @@ import {
   LoginInterface,
   RecoveryPasswordInterface,
   updateDataUserInterface,
+  UpdateEmaiUserInterface,
 } from "../auth/user.interface";
 import {
   CreateCategoryInterface,
@@ -67,6 +68,11 @@ export function updateDataUser(data: updateDataUserInterface, token: string) {
     headers: handleGetHeaders("application/json", token),
   });
 }
+export function updateEmailUser(data: UpdateEmaiUserInterface, token: string) {
+  return axios.put(`${api}/user/change-email`, data, {
+    headers: handleGetHeaders("application/json", token),
+  });
+}
 
 //categories
 export function createCategory(data: CreateCategoryInterface, token: string) {
@@ -116,4 +122,14 @@ export function createContentIdentity(
   return axios.post(`${api}/provider/create`, data, {
     headers: handleGetHeaders("application/json", token),
   });
+}
+
+//E-mail
+
+export function sendCodeToChangeEmail(email: string, token: string) {
+  return axios.post(
+    `${api}/email/send-code-change-email`,
+    { email },
+    { headers: handleGetHeaders("application/json", token) }
+  );
 }

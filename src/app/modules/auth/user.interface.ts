@@ -24,3 +24,8 @@ export interface updateDataUserInterface {
   name: string;
   birthDate: Date | string | null;
 }
+export interface UpdateEmaiUserInterface {
+  email: string;
+  codeEmail: string | null;
+  password: string;
+}

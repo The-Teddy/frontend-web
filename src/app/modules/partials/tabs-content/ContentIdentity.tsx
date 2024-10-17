@@ -7,7 +7,11 @@ import { createContentIdentity } from "../../helpers/api";
 import { Context } from "../../auth/AuthContext";
 import { ContentIdentityInterface } from "../../interfaces/ProviderInterfaces";
 import { toast } from "react-toastify";
-import { handleMask, handleValidateDocument } from "../../helpers/utils";
+import {
+  handleError,
+  handleMask,
+  handleValidateDocument,
+} from "../../helpers/utils";
 import ConfirmModal from "../modals/confirm-modal/ConfirmModal";
 
 interface ContentIInterface {
@@ -49,19 +53,12 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
         props.setTabView("profile");
         console.log(res);
         toast.success("Empresa Cadastrada com sucesso!");
+        setViewConfirmModal(false);
         handleGetUser();
       })
       .catch((error) => {
         console.error(error);
-        if (error.response && error.response.data) {
-          if (Array.isArray(error.response.data.message)) {
-            toast.error(error.response.data.message.join(" "));
-          } else if (typeof error.response.data.message === "string") {
-            toast.error(error.response.data.message);
-          } else {
-            toast.error("Ocorreu um erro inesperado.");
-          }
-        }
+        handleError(error);
       })
       .finally(() => {
         setLoadingButton(false);
@@ -187,6 +184,7 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
         handleSubmit={handleValidateData}
       />
       <ConfirmModal
+        loading={loadingButton}
         message="Após salvar informações críticas, como a identidade, você poderá realizar apenas uma correção no período de 30 dias. Após essa correção, qualquer correção adicional necessitará da aprovação dos administradores."
         title="Confirmar cadastro da empresa?"
         view={viewConfirmModal}

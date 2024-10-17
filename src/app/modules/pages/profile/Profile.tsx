@@ -8,12 +8,14 @@ import DefaultSaveButton from "../../partials/buttons/DefaultSaveButton";
 import {
   convertDateToISO,
   handleConvertDate,
+  handleError,
   handleIsValidDate,
 } from "../../helpers/utils";
 import { updateDataUser } from "../../helpers/api";
 import { updateDataUserInterface } from "../../auth/user.interface";
 import { toast } from "react-toastify";
 import ConfirmModal from "../../partials/modals/confirm-modal/ConfirmModal";
+import ChangeEmailModal from "../../partials/modals/change-email-modal/ChangeEmailModal";
 
 const Profile = () => {
   const { user, token, handleGetUser } = useContext(Context);
@@ -21,7 +23,9 @@ const Profile = () => {
   const [birthDate, setBirthDate] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [loadingButton, setLoadingButton] = useState<boolean>(false);
-  const [openconfirmModal, setOpenConfirmModal] = useState<boolean>(false);
+  const [viewConfirmModal, setViewConfirmModal] = useState<boolean>(false);
+  const [viewChangeEmailModal, setViewChangeEmailModal] =
+    useState<boolean>(false);
 
   function handleSaveData() {
     const data: updateDataUserInterface = {
@@ -33,18 +37,10 @@ const Profile = () => {
       .then((res) => {
         handleGetUser();
         toast.success("Dados atualizados com sucesso");
-        setOpenConfirmModal(false);
+        setViewConfirmModal(false);
       })
       .catch((error) => {
-        if (error.response && error.response.data) {
-          if (Array.isArray(error.response.data.message)) {
-            toast.error(error.response.data.message.join(" "));
-          } else if (typeof error.response.data.message === "string") {
-            toast.error(error.response.data.message);
-          } else {
-            toast.error("Ocorreu um erro inesperado.");
-          }
-        }
+        handleError(error);
       })
       .finally(() => {
         setLoadingButton(false);
@@ -66,7 +62,7 @@ const Profile = () => {
       }
     }
 
-    setOpenConfirmModal(true);
+    setViewConfirmModal(true);
   }
   useEffect(() => {
     if (user) {
@@ -138,7 +134,10 @@ const Profile = () => {
               disabled
             />
           </label>
-          <DefaultSaveButton title="Editar E-mail" handleSubmit={() => []} />
+          <DefaultSaveButton
+            title="Editar E-mail"
+            handleSubmit={() => setViewChangeEmailModal(true)}
+          />
         </div>
         <div className="info-user" style={{ marginTop: 30 }}>
           <label className="w-100 text-start">
@@ -158,9 +157,14 @@ const Profile = () => {
       <ConfirmModal
         loading={loadingButton}
         title="Confirmar alteração do Nome e Data de Nascimento?"
-        view={openconfirmModal}
-        setView={() => setOpenConfirmModal(false)}
+        view={viewConfirmModal}
+        setView={() => setViewConfirmModal(false)}
         handleSubmit={handleSaveData}
+      />
+      <ChangeEmailModal
+        oldEmail={user?.email || ""}
+        view={viewChangeEmailModal}
+        setView={() => setViewChangeEmailModal(false)}
       />
     </div>
   );

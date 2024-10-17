@@ -46,6 +46,7 @@ const Company = () => {
       setSearchParams({});
     }
   }, [searchParams.get("tab")]);
+
   return (
     <div id="company" className="background-default">
       <p className="title">Gerenciar Empresa</p>

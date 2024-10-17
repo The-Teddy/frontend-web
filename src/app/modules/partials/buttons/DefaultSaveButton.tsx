@@ -2,7 +2,7 @@ import React from "react";
 
 interface ButtonInterface {
   title: string;
-  handleSubmit?: () => void;
+  handleSubmit: () => void;
   loading?: boolean;
 }
 const DefaultSaveButton: React.FC<ButtonInterface> = ({ ...props }) => {
