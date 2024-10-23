@@ -5,6 +5,7 @@ import {
   RecoveryPasswordInterface,
   updateDataUserInterface,
   UpdateEmaiUserInterface,
+  UpdatePasswordUserInterface,
 } from "../auth/user.interface";
 import {
   CreateCategoryInterface,
@@ -70,6 +71,14 @@ export function updateDataUser(data: updateDataUserInterface, token: string) {
 }
 export function updateEmailUser(data: UpdateEmaiUserInterface, token: string) {
   return axios.put(`${api}/user/change-email`, data, {
+    headers: handleGetHeaders("application/json", token),
+  });
+}
+export function updatePasswordUser(
+  data: UpdatePasswordUserInterface,
+  token: string
+) {
+  return axios.put(`${api}/user/change-password`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }

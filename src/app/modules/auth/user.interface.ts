@@ -29,3 +29,7 @@ export interface UpdateEmaiUserInterface {
   codeEmail: string | null;
   password: string;
 }
+export interface UpdatePasswordUserInterface {
+  password: string;
+  newPassword: string;
+}

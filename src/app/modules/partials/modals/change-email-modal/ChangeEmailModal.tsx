@@ -117,8 +117,23 @@ const ChangeEmailModal: React.FC<ChangeEmailModalInterface> = ({
     setNewEmail("");
   }, [props.view]);
 
+  function handleCloseModal(event: any) {
+    const className = event.target.className;
+
+    if (
+      typeof className === "string" &&
+      className.includes("MuiBackdrop-root")
+    ) {
+      props.setView();
+    }
+  }
   return (
-    <Modal open={props.view} id="change-email-modal">
+    <Modal
+      open={props.view}
+      id="change-email-modal"
+      onKeyDown={(e) => (e.key === "Escape" ? props.setView() : "")}
+      onClick={(e) => handleCloseModal(e)}
+    >
       <Box className="modal-content">
         <p className="title">
           <span>Alteração de E-mail</span>{" "}

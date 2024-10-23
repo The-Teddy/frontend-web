@@ -302,6 +302,11 @@ function handleError(error: any) {
     }
   }
 }
+function handleValidatePassword(password: string): boolean {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+
+  return regex.test(password);
+}
 
 export {
   handleConverterId,
@@ -322,4 +327,5 @@ export {
   handleIsValidDate,
   convertDateToISO,
   handleError,
+  handleValidatePassword,
 };

@@ -16,6 +16,7 @@ import { updateDataUserInterface } from "../../auth/user.interface";
 import { toast } from "react-toastify";
 import ConfirmModal from "../../partials/modals/confirm-modal/ConfirmModal";
 import ChangeEmailModal from "../../partials/modals/change-email-modal/ChangeEmailModal";
+import ChangePasswordModal from "../../partials/modals/change-password-modal/ChangePasswordModal";
 
 const Profile = () => {
   const { user, token, handleGetUser } = useContext(Context);
@@ -26,8 +27,11 @@ const Profile = () => {
   const [viewConfirmModal, setViewConfirmModal] = useState<boolean>(false);
   const [viewChangeEmailModal, setViewChangeEmailModal] =
     useState<boolean>(false);
+  const [viewChangePasswordModal, setViewChangePasswordModal] =
+    useState<boolean>(false);
 
   function handleSaveData() {
+    console.log(birthDate);
     const data: updateDataUserInterface = {
       name,
       birthDate: convertDateToISO(birthDate),
@@ -53,10 +57,11 @@ const Profile = () => {
     if (!handleIsValidDate(birthDate)) {
       return toast.warning("Insira uma data válida");
     }
+
     if (convertDateToISO(birthDate)) {
       if (
-        user?.birthDate.toString() === convertDateToISO(birthDate) &&
-        user?.name.trim() === name.trim()
+        user?.birthDate?.toString() === convertDateToISO(birthDate) &&
+        user?.name?.trim() === name.trim()
       ) {
         return toast.warning("Não houve alterações nos dados");
       }
@@ -143,7 +148,10 @@ const Profile = () => {
           <label className="w-100 text-start">
             <span>Senha:</span>
           </label>
-          <DefaultSaveButton title="Editar Senha" handleSubmit={() => []} />
+          <DefaultSaveButton
+            title="Editar Senha"
+            handleSubmit={() => setViewChangePasswordModal(true)}
+          />
         </div>
         <div className="info-user" style={{ marginTop: 30 }}>
           <label className="w-100 text-start">
@@ -165,6 +173,10 @@ const Profile = () => {
         oldEmail={user?.email || ""}
         view={viewChangeEmailModal}
         setView={() => setViewChangeEmailModal(false)}
+      />
+      <ChangePasswordModal
+        view={viewChangePasswordModal}
+        setView={() => setViewChangePasswordModal(false)}
       />
     </div>
   );

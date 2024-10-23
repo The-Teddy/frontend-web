@@ -3,7 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "../helpers/api";
 import { toast } from "react-toastify";
 import DefaultSaveButton from "../partials/buttons/DefaultSaveButton";
-import { handleValidateEmail } from "../helpers/utils";
+import {
+  handleError,
+  handleValidateEmail,
+  handleValidatePassword,
+} from "../helpers/utils";
 
 const Register = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,8 +25,10 @@ const Register = () => {
     if (!handleValidateEmail(email)) {
       return toast.warning("Insira um email válido!");
     }
-    if (password.length < 8) {
-      return toast.warning("A senha precisar ter no minímo 8 caracteres!");
+    if (!handleValidatePassword(password)) {
+      return toast.warning(
+        "A senha precisa ter no mínimo 8 caracteres, incluindo 1 letra maiúscula, 1 letra minúscula e 1 caractere especial!"
+      );
     }
     if (password !== confirmPassword) {
       return toast.warning("Senha e confirmar senha não coincidem!");
@@ -39,7 +45,7 @@ const Register = () => {
         navigate("/login");
       })
       .catch((error) => {
-        toast.warning(error.response.data.message);
+        handleError(error);
       })
       .finally(() => {
         setLoading(false);

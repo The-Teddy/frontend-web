@@ -9,6 +9,17 @@
   width: 90%;
   max-width: 450px;
   height: 550px;
+
+  .input-box {
+    display: flex;
+    align-items: center;
+    svg {
+      margin-left: -30px !important;
+      margin-top: 50px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  }
 }
 #register {
   width: 90%;

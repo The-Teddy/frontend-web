@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Context } from "./AuthContext";
 import DefaultSaveButton from "../partials/buttons/DefaultSaveButton";
 import { handleIsNumber } from "../helpers/utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");
@@ -11,6 +13,7 @@ const Login = () => {
   const [emailCode, setEmailCode] = useState<string | null>(null);
   const [viewErrorCode, setViewErrorCode] = useState<boolean>(false);
   const { handleLogin, loading, emailNotVerified } = useContext(Context);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   return (
     <div id="login" className="auth">
@@ -33,19 +36,32 @@ const Login = () => {
             placeholder="Ex: pedroalves923@gmail.com"
           />
         </label>
-        <label htmlFor="" className="w-100 text-start mt-3">
-          Password:
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) =>
-              e.key === "Enter" ? handleLogin(email, password, emailCode) : ""
-            }
-            className="form-control"
-            type="password"
-            placeholder="Digite sua senha"
-          />
-        </label>
+        <div className="input-box">
+          <label htmlFor="" className="w-100 text-start mt-3">
+            Password:
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" ? handleLogin(email, password, emailCode) : ""
+              }
+              className="form-control"
+              type={showPassword ? "text" : "password"}
+              placeholder="Digite sua senha"
+            />
+          </label>
+          {showPassword ? (
+            <FontAwesomeIcon
+              onClick={() => setShowPassword(!showPassword)}
+              icon={faEyeSlash}
+            />
+          ) : (
+            <FontAwesomeIcon
+              onClick={() => setShowPassword(!showPassword)}
+              icon={faEye}
+            />
+          )}
+        </div>
         {emailNotVerified ? (
           <>
             <label className="w-100 text-start mt-3">

@@ -1,6 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
 import { UserModel } from "./user.interface";
-import { handleValidateEmail, handleValidateEmailCode } from "../helpers/utils";
+import {
+  handleValidateEmail,
+  handleValidateEmailCode,
+  handleValidatePassword,
+} from "../helpers/utils";
 import { toast } from "react-toastify";
 import { getUser, login } from "../helpers/api";
 import { json } from "stream/consumers";
@@ -53,7 +57,7 @@ const AuthContext: React.FC<AuthProviderProps> = ({ children }) => {
     if (!handleValidateEmail(email)) {
       return toast.warning("Insira um email válido.");
     }
-    if (password.length < 8) {
+    if (!handleValidatePassword(password)) {
       return toast.warning("Insira uma senha válida");
     }
     const validateEmail = handleValidateEmailCode(code);
