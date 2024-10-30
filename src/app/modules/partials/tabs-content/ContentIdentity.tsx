@@ -1,9 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DefaultQuestionIcon from "../default-question-icon/DefaultQuestionIcon";
 import HelpDetailModal from "../modals/help-detail-modal/HelpDetailModal";
 import CategorySelectModal from "../modals/category-select-modal/CategorySelectModal";
 import DefaultSaveButton from "../buttons/DefaultSaveButton";
-import { createContentIdentity } from "../../helpers/api";
+import {
+  createCriticalDataProvider,
+  updateCriticalDataProvider,
+} from "../../helpers/api";
 import { Context } from "../../auth/AuthContext";
 import { ContentIdentityInterface } from "../../interfaces/ProviderInterfaces";
 import { toast } from "react-toastify";
@@ -18,7 +21,7 @@ interface ContentIInterface {
   setTabView: (value: string) => void;
 }
 const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
-  const { token, handleGetUser } = useContext(Context);
+  const { token, user, handleGetUser } = useContext(Context);
   const [businessName, setBusinessName] = useState<string>("");
   const [category, setCategory] = useState<string>("Selecione...");
   const [url, setUrl] = useState<string>("");
@@ -48,13 +51,33 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
     };
 
     setLoadingButton(true);
-    createContentIdentity(data, token)
+    createCriticalDataProvider(data, token)
       .then((res) => {
         props.setTabView("profile");
-        console.log(res);
         toast.success("Empresa Cadastrada com sucesso!");
         setViewConfirmModal(false);
         handleGetUser();
+      })
+      .catch((error) => {
+        console.error(error);
+        handleError(error);
+      })
+      .finally(() => {
+        setLoadingButton(false);
+      });
+  }
+  function handleUpdateData() {
+    setLoadingButton(true);
+    const data: ContentIdentityInterface = {
+      businessName,
+      document,
+      category,
+      url,
+    };
+    updateCriticalDataProvider(data, token)
+      .then(() => {
+        setViewConfirmModal(false);
+        toast.success("Seus dados foram atualizados com sucesso");
       })
       .catch((error) => {
         console.error(error);
@@ -83,8 +106,28 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
         "Por favor, escolha o segmento adequado para a sua empresa."
       );
     }
+    if (
+      user?.business.name === businessName.trim() &&
+      user?.business.document === document.trim() &&
+      user?.business.url === url.trim() &&
+      user?.business.category === category.trim()
+    ) {
+      return toast.warning("Não houve alterações nos dados");
+    }
     setViewConfirmModal(true);
   }
+
+  useEffect(() => {
+    if (user?.business) {
+      setBusinessName(user?.business.name);
+      setDocument(user?.business.document);
+      setUrl(user?.business.url);
+      if (user?.business.category) {
+        setCategory(user?.business.category);
+      }
+    }
+  }, [user]);
+
   return (
     <>
       <div className="box-content" id="business-identity">
@@ -189,7 +232,7 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
         title="Confirmar cadastro da empresa?"
         view={viewConfirmModal}
         setView={() => setViewConfirmModal(false)}
-        handleSubmit={handleSaveData}
+        handleSubmit={user?.business ? handleUpdateData : handleSaveData}
       />
     </>
   );

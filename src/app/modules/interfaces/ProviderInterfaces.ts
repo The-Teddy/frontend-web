@@ -6,6 +6,7 @@ export interface ContentIdentityInterface {
 }
 export interface ProviderInterface {
   name: string;
+  document: string;
   about: string | null;
   category: string | null;
   url: string;

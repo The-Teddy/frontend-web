@@ -124,11 +124,20 @@ export function getOneById(id: number, token: string, url: string) {
 
 //Providers
 
-export function createContentIdentity(
+export function createCriticalDataProvider(
   data: ContentIdentityInterface,
   token: string
 ) {
   return axios.post(`${api}/provider/create`, data, {
+    headers: handleGetHeaders("application/json", token),
+  });
+}
+
+export function updateCriticalDataProvider(
+  data: ContentIdentityInterface,
+  token: string
+) {
+  return axios.put(`${api}/provider/update-critical`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }
