@@ -16,12 +16,13 @@ import {
   handleValidateDocument,
 } from "../../helpers/utils";
 import ConfirmModal from "../modals/confirm-modal/ConfirmModal";
+import AlertMessage from "../alert-message/AlertMessage";
 
 interface ContentIInterface {
   setTabView: (value: string) => void;
 }
 const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
-  const { token, user, handleGetUser } = useContext(Context);
+  const { token, user, handleGetUser, handleLogout } = useContext(Context);
   const [businessName, setBusinessName] = useState<string>("");
   const [category, setCategory] = useState<string>("Selecione...");
   const [url, setUrl] = useState<string>("");
@@ -34,6 +35,8 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
     useState<boolean>(false);
   const [viewConfirmModal, setViewConfirmModal] = useState<boolean>(false);
   const urlRegex: RegExp = /^(?=.{3,})[a-zA-Z0-9_-]+$/;
+  const [viewMode, setViewMode] = useState(false);
+  const [viewRequestModal, setViewRequestModal] = useState(false);
 
   function handleViewHelpDetailModal(title: string, text: string) {
     if (title === titleHelpDetailModal || titleHelpDetailModal.length === 0) {
@@ -53,8 +56,11 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
     setLoadingButton(true);
     createCriticalDataProvider(data, token)
       .then((res) => {
-        props.setTabView("profile");
-        toast.success("Empresa Cadastrada com sucesso!");
+        // props.setTabView("profile");
+        toast.success(
+          "Empresa Cadastrada com sucesso! \n  Por favor, refaça o login!"
+        );
+        handleLogout(true);
         setViewConfirmModal(false);
         handleGetUser();
       })
@@ -78,6 +84,7 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
       .then(() => {
         setViewConfirmModal(false);
         toast.success("Seus dados foram atualizados com sucesso");
+        handleGetUser();
       })
       .catch((error) => {
         console.error(error);
@@ -106,19 +113,24 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
         "Por favor, escolha o segmento adequado para a sua empresa."
       );
     }
-    if (
-      user?.business.name === businessName.trim() &&
-      user?.business.document === document.trim() &&
-      user?.business.url === url.trim() &&
-      user?.business.category === category.trim()
-    ) {
-      return toast.warning("Não houve alterações nos dados");
+    if (user?.business) {
+      if (
+        user?.business.name === businessName.trim() &&
+        user?.business.document === document.trim() &&
+        user?.business.url === url.trim() &&
+        user?.business.category === category.trim()
+      ) {
+        return toast.warning("Não houve alterações nos dados");
+      }
     }
     setViewConfirmModal(true);
   }
 
   useEffect(() => {
     if (user?.business) {
+      if (user?.business.hasAutomaticUpdate) {
+        setViewMode(true);
+      }
       setBusinessName(user?.business.name);
       setDocument(user?.business.document);
       setUrl(user?.business.url);
@@ -142,6 +154,8 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
             }
           />
           <input
+            readOnly={viewMode}
+            disabled={viewMode}
             className="form-control"
             type="text"
             placeholder="Exemplo: Wl Barber"
@@ -160,6 +174,8 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
             }
           />
           <input
+            readOnly={viewMode}
+            disabled={viewMode}
             className="form-control"
             type="text"
             placeholder="CPF: 000.000.000-00 ou CNPJ: 00.000.000/0000-00 "
@@ -180,6 +196,8 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
             }
           />
           <input
+            readOnly={viewMode}
+            disabled={viewMode}
             type="text"
             className="form-control"
             placeholder="Exemplo: wl_barber"
@@ -198,6 +216,7 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
             }
           />
           <select
+            disabled={viewMode}
             name=""
             id="category-select"
             className="form-select"
@@ -210,6 +229,17 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
           </select>
         </label>
       </div>
+      {!user?.business ? (
+        <AlertMessage message="Atenção: Após a criação da sua empresa, você terá uma oportunidade, dentro de um período de 30 dias, para modificar os dados críticos. Após esse prazo, qualquer alteração nesses dados exigirá aprovação prévia da nossa equipe de administradores." />
+      ) : (
+        <>
+          {!user?.business?.hasAutomaticUpdate ? (
+            <AlertMessage message="Você está prestes a utilizar a sua única chance de atualização de dados críticos. Lembre-se de revisar cuidadosamente as informações antes de salvar, pois após essa alteração, novas modificações exigirão aprovação dos administradores." />
+          ) : (
+            <AlertMessage message="Para alterar seus dados críticos, é necessário enviar uma solicitação de atualização. Nossa equipe de administradores avaliará o pedido e você será notificado assim que a mudança for aprovada." />
+          )}
+        </>
+      )}
       <HelpDetailModal
         title={titleHelpDetailModal}
         view={viewHelpDetailModal}
@@ -223,8 +253,14 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
       />
       <DefaultSaveButton
         loading={loadingButton}
-        title="Salvar"
-        handleSubmit={handleValidateData}
+        title={
+          user?.business?.hasAutomaticUpdate ? "Solicitar Alterações" : "Salvar"
+        }
+        handleSubmit={() =>
+          user?.business?.hasAutomaticUpdate
+            ? setViewRequestModal(true)
+            : handleValidateData()
+        }
       />
       <ConfirmModal
         loading={loadingButton}
