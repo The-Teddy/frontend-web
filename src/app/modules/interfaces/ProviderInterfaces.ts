@@ -14,4 +14,25 @@ export interface ProviderInterface {
   logo: string | null;
   cover: string | null;
   hasAutomaticUpdate: boolean;
+  phoneNumberCommercial: string;
+  postalCode: string;
+  street: string;
+  number: string | null;
+  complement: string | null;
+  neighborhood: string;
+  city: string;
+  state: string;
+  reference: string | null;
+}
+export interface ContentProfileInterface {
+  about: string;
+  phoneNumber: string;
+  postalCode: string;
+  street: string;
+  number: string;
+  complement: string | null;
+  neighborhood: string;
+  city: string;
+  state: string;
+  reference: string | null;
 }

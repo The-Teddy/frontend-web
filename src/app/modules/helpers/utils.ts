@@ -49,6 +49,15 @@ function handleGetHeaders(contentType: string, token?: string | null) {
 
   return headers;
 }
+function handleGetStaticsHeaders(token?: string | null) {
+  const headers: any = {};
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  return headers;
+}
 
 function handleMask(value: string): string {
   // Remove todos os caracteres não numéricos
@@ -294,7 +303,19 @@ function handleIsLeapYear(year: number): boolean {
 function handleError(error: any) {
   if (error.response && error.response.data) {
     if (Array.isArray(error.response.data.message)) {
-      toast.error(error.response.data.message.join(" "));
+      const errors = error.response.data.message;
+
+      const showNextError = () => {
+        if (errors.length > 0) {
+          const nextError = errors.shift(); // Pega o primeiro erro da lista
+          toast.error(nextError); // Exibe o erro
+
+          setTimeout(() => {
+            showNextError(); // Mostra o próximo erro após 3 segundos (por exemplo)
+          }, 3000); // 3 segundos de delay entre os erros
+        }
+      };
+      showNextError();
     } else if (typeof error.response.data.message === "string") {
       toast.error(error.response.data.message);
     } else {
@@ -308,6 +329,47 @@ function handleValidatePassword(password: string): boolean {
   return regex.test(password);
 }
 
+function handlePhoneMask(value: string) {
+  // Remove tudo que não for número
+  const cleanedValue = value.replace(/\D/g, "");
+
+  // Limita o valor a 11 caracteres para móveis e 10 para fixos
+  const limitedValue = cleanedValue.substring(0, 11); // Para números móveis (máximo 11 dígitos)
+
+  // Se for um número móvel (com 11 dígitos), aplica a máscara no formato (XX) XXXXX-XXXX
+  if (limitedValue.length > 10) {
+    return limitedValue.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+  }
+
+  // Se for um número fixo (com 10 dígitos), aplica a máscara no formato (XX) XXXX-XXXX
+  return limitedValue.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
+}
+function handlePostalCodeMask(value: string) {
+  const cleanedValue = value.replace(/\D/g, "");
+
+  const limitedValud = cleanedValue.substring(0, 8);
+
+  return limitedValud.replace(/^(\d{5})(\d{3})$/, "$1-$2");
+}
+async function handleGetDataByPostalCode(postalCode: string) {
+  try {
+    toast.warning("Buscando CEP...");
+    const response = await fetch(
+      `https://viacep.com.br/ws/${postalCode}/json/`
+    );
+
+    const data = await response.json();
+
+    if (data.erro) {
+      toast.error("CEP inexistente");
+    } else {
+      toast.success("CEP encontrado");
+      return data;
+    }
+  } catch (error) {
+    handleError(error);
+  }
+}
 export {
   handleConverterId,
   handleValidateEmail,
@@ -328,4 +390,8 @@ export {
   convertDateToISO,
   handleError,
   handleValidatePassword,
+  handleGetStaticsHeaders,
+  handlePhoneMask,
+  handlePostalCodeMask,
+  handleGetDataByPostalCode,
 };

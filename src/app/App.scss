@@ -45,6 +45,11 @@ label {
   padding: 10px;
   padding-bottom: 50px;
   transition: 1s all ease;
+
+  .max-width-default {
+    max-width: 1224px !important;
+    margin: 0 auto !important;
+  }
   @media (max-width: 992px) {
     margin-left: 0;
     transition: 1s all ease;
@@ -172,4 +177,9 @@ textarea::placeholder {
   font-weight: 700;
   padding-left: 0.25rem;
   position: relative;
+}
+.info-text {
+  color: #6c757d !important;
+  text-align: start;
+  margin: 10px;
 }

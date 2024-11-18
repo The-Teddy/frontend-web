@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleGetHeaders } from "./utils";
+import { handleGetHeaders, handleGetStaticsHeaders } from "./utils";
 import {
   LoginInterface,
   RecoveryPasswordInterface,
@@ -11,7 +11,10 @@ import {
   CreateCategoryInterface,
   UpdateCategoryInterface,
 } from "../pages/category/CategoryInterface";
-import { ContentIdentityInterface } from "../interfaces/ProviderInterfaces";
+import {
+  ContentIdentityInterface,
+  ContentProfileInterface,
+} from "../interfaces/ProviderInterfaces";
 
 const api = process.env.REACT_APP_API_URL;
 const token = localStorage.getItem("token");
@@ -21,7 +24,7 @@ const token = localStorage.getItem("token");
 // }
 //Rotas "públicas"
 export function createUser(data: any) {
-  return axios.post(`${api}/user/create`, data, {
+  return axios.post(`${api}/user`, data, {
     headers: handleGetHeaders("application/json"),
   });
 }
@@ -47,14 +50,14 @@ export function sendCodeEmail(email: string) {
 //Rotas "privadas"
 
 //uploads
-export function uploadLogoUser(data: FormData, token: string) {
+export function uploadLogoProvider(data: FormData, token: string) {
   return axios.put(`${api}/upload/logo`, data, {
-    headers: handleGetHeaders("multipart/form-data", token),
+    headers: handleGetStaticsHeaders(token),
   });
 }
-export function uploadCoverUser(data: FormData, token: string) {
+export function uploadCoverProvider(data: FormData, token: string) {
   return axios.put(`${api}/upload/cover`, data, {
-    headers: handleGetHeaders("multipart/form-data", token),
+    headers: handleGetStaticsHeaders(token),
   });
 }
 
@@ -65,12 +68,12 @@ export function getUser(token: string | null) {
   });
 }
 export function updateDataUser(data: updateDataUserInterface, token: string) {
-  return axios.put(`${api}/user/update-data`, data, {
+  return axios.put(`${api}/user`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }
 export function updateEmailUser(data: UpdateEmaiUserInterface, token: string) {
-  return axios.put(`${api}/user/change-email`, data, {
+  return axios.put(`${api}/user/email`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }
@@ -78,14 +81,14 @@ export function updatePasswordUser(
   data: UpdatePasswordUserInterface,
   token: string
 ) {
-  return axios.put(`${api}/user/change-password`, data, {
+  return axios.put(`${api}/user/password`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }
 
 //categories
 export function createCategory(data: CreateCategoryInterface, token: string) {
-  return axios.post(`${api}/category/create`, data, {
+  return axios.post(`${api}/category`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }
@@ -95,7 +98,7 @@ export function getAllCategories(token: string) {
   });
 }
 export function updateCategory(data: UpdateCategoryInterface, token: string) {
-  return axios.put(`${api}/category/update`, data, {
+  return axios.put(`${api}/category`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }
@@ -128,7 +131,7 @@ export function createCriticalDataProvider(
   data: ContentIdentityInterface,
   token: string
 ) {
-  return axios.post(`${api}/provider/create`, data, {
+  return axios.post(`${api}/provider`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }
@@ -137,7 +140,16 @@ export function updateCriticalDataProvider(
   data: ContentIdentityInterface,
   token: string
 ) {
-  return axios.put(`${api}/provider/update-critical`, data, {
+  return axios.put(`${api}/provider/critical`, data, {
+    headers: handleGetHeaders("application/json", token),
+  });
+}
+
+export function updateProviderData(
+  data: ContentProfileInterface,
+  token: string
+) {
+  return axios.put(`${api}/provider/data`, data, {
     headers: handleGetHeaders("application/json", token),
   });
 }

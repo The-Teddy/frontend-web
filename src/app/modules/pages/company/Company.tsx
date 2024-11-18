@@ -3,7 +3,7 @@ import { Context } from "../../auth/AuthContext";
 import { Load } from "../../partials/Spinner";
 import "./Company.scss";
 import ContentIdentity from "../../partials/tabs-content/ContentIdentity";
-import ContentProfile from "../../partials/tabs-content/ContentProfile";
+import ContentProfile from "../../partials/tabs-content/content-profile/ContentProfile";
 import ContentHours from "../../partials/tabs-content/ContentHours";
 import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -48,7 +48,7 @@ const Company = () => {
   }, [searchParams.get("tab")]);
 
   return (
-    <div id="company" className="background-default">
+    <div id="company" className="background-default max-width-default">
       <p className="title">Gerenciar Empresa</p>
 
       <nav aria-label="Navegação de configurações" id="tab-nav">

@@ -5,7 +5,7 @@ import { Context } from "./AuthContext";
 import DefaultSaveButton from "../partials/buttons/DefaultSaveButton";
 import { handleIsNumber } from "../helpers/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [email, setEmail] = useState<string>("");

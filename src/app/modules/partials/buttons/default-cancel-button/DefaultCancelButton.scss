@@ -1,0 +1,12 @@
+#default-cancel-button {
+  background: red;
+  border: none;
+  border-radius: 8px;
+  height: 45px;
+  width: 100%;
+  margin: 25px 0 10px 0;
+  color: #fff !important;
+}
+#default-cancel-button:hover {
+  opacity: 0.75;
+}

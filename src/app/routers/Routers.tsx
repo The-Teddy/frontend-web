@@ -17,6 +17,9 @@ import PrivateAndAdminstratorRoute from "./PrivateAndAdminstratorRoute";
 import PrivateAndSuperAdminstratorRoute from "./PrivateAndSuperAdminstratorRoute";
 import UpdateCategory from "../modules/pages/category/UpdateCategory";
 import Profile from "../modules/pages/profile/Profile";
+import Service from "../modules/pages/service/Service";
+import Request from "../modules/pages/request/Request";
+import PrivateUsersRoute from "./PrivateUsersRoute";
 
 const Routers = () => {
   return (
@@ -78,15 +81,37 @@ const Routers = () => {
           }
         ></Route>
         <Route
-          path="/empresa"
+          path="/perfil"
           element={
             <PrivateRoute>
-              <Company />
+              <Profile />
             </PrivateRoute>
           }
         ></Route>
         <Route
-          path="/categoria"
+          path="/servicos"
+          element={
+            <PrivateRoute>
+              <Service />
+            </PrivateRoute>
+          }
+        ></Route>
+
+        {/*Rotas apenas para usários comuns */}
+
+        <Route
+          path="/empresa"
+          element={
+            <PrivateUsersRoute>
+              <Company />
+            </PrivateUsersRoute>
+          }
+        ></Route>
+
+        {/* Rotas administrativas */}
+
+        <Route
+          path="/categorias"
           element={
             <PrivateAndAdminstratorRoute>
               <Category />
@@ -118,11 +143,11 @@ const Routers = () => {
           }
         ></Route>
         <Route
-          path="/perfil"
+          path="/requisicoes"
           element={
-            <PrivateRoute>
-              <Profile />
-            </PrivateRoute>
+            <PrivateAndAdminstratorRoute>
+              <Request />
+            </PrivateAndAdminstratorRoute>
           }
         ></Route>
       </Routes>
