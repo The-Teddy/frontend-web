@@ -14,7 +14,8 @@ import {
 import {
   ContentIdentityInterface,
   ContentProfileInterface,
-} from "../interfaces/ProviderInterfaces";
+} from "../global/interfaces/ProviderInterfaces";
+import { CreateRequestInterface } from "../global/interfaces/CreateRequestInterface";
 
 const api = process.env.REACT_APP_API_URL;
 const token = localStorage.getItem("token");
@@ -162,4 +163,29 @@ export function sendCodeToChangeEmail(email: string, token: string) {
     { email },
     { headers: handleGetHeaders("application/json", token) }
   );
+}
+
+//Requisições
+export function updateRequest(id: number, data: any, token: string) {
+  return axios.put(`${api}/request/${id}`, data, {
+    headers: handleGetHeaders("application/json", token),
+  });
+}
+export function getAllRequests(
+  page: number,
+  limit: number = 10,
+  token: string,
+  isProvider: boolean
+) {
+  return axios.get(
+    `${api}/request?page=${page}&limit=${limit}&isProvider=${isProvider}`,
+    {
+      headers: handleGetHeaders("application/json", token),
+    }
+  );
+}
+export function createRequest(data: CreateRequestInterface, token: string) {
+  return axios.post(`${api}/request`, data, {
+    headers: handleGetHeaders("application/json", token),
+  });
 }

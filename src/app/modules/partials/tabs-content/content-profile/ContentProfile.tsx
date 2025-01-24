@@ -15,7 +15,7 @@ import {
   handlePostalCodeMask,
 } from "../../../helpers/utils";
 import { Context } from "../../../auth/AuthContext";
-import { ContentProfileInterface } from "../../../interfaces/ProviderInterfaces";
+import { ContentProfileInterface } from "../../../global/interfaces/ProviderInterfaces";
 import {
   handleValidateLogo,
   handleValidateCity,

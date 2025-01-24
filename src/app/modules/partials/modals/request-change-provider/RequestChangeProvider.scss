@@ -1,0 +1,93 @@
+#request-change-provider {
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 0;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #aaafb6;
+    border-radius: 10px;
+  }
+  margin: 50px auto;
+  width: 90%;
+  max-width: 600px;
+
+  .modal-box {
+    background: #fff;
+    border-radius: 8px;
+    height: 500px;
+
+    .modal-close {
+      padding: none;
+      margin: none;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      i {
+        font-size: 25px;
+      }
+    }
+    .modal-close:hover {
+      opacity: 0.75;
+    }
+    .box-control {
+      align-items: start;
+      padding: 10px;
+    }
+    .modal-content {
+      overflow-y: auto;
+      max-height: 80%;
+      padding: 10px;
+
+      .default-save-button {
+        margin-top: auto;
+      }
+      .box-buttons {
+        display: flex;
+        justify-content: space-between;
+        button {
+          width: 45%;
+        }
+        #default-cancel-button {
+          background: #aaafb6 !important;
+        }
+      }
+
+      .box-fields-to-change {
+        display: flex;
+        flex-wrap: wrap;
+
+        .field-to-change {
+          border: 2px dashed #f2f2f2;
+          margin: 10px;
+          padding: 15px;
+          width: 200px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-grow: 1;
+
+          .sub-title {
+            font-size: 16px;
+            margin: 0;
+          }
+        }
+      }
+    }
+    .box-inputs {
+      .old-value {
+        font-size: 14px;
+        font-weight: 500;
+        margin-left: 10px;
+      }
+      select {
+        cursor: pointer;
+      }
+    }
+  }
+}

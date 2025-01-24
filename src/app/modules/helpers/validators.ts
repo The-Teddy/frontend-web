@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { ContentProfileInterface } from "../interfaces/ProviderInterfaces";
+import { ContentProfileInterface } from "../global/interfaces/ProviderInterfaces";
 
 const supportedFormats = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
 

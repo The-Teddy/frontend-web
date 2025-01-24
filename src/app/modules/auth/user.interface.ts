@@ -1,4 +1,4 @@
-import { ProviderInterface } from "../interfaces/ProviderInterfaces";
+import { ProviderInterface } from "../global/interfaces/ProviderInterfaces";
 
 export interface UserModel {
   id: Buffer;

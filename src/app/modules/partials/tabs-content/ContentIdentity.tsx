@@ -8,7 +8,7 @@ import {
   updateCriticalDataProvider,
 } from "../../helpers/api";
 import { Context } from "../../auth/AuthContext";
-import { ContentIdentityInterface } from "../../interfaces/ProviderInterfaces";
+import { ContentIdentityInterface } from "../../global/interfaces/ProviderInterfaces";
 import { toast } from "react-toastify";
 import {
   handleError,
@@ -17,6 +17,8 @@ import {
 } from "../../helpers/utils";
 import ConfirmModal from "../modals/confirm-modal/ConfirmModal";
 import AlertMessage from "../alert-message/AlertMessage";
+import RequestChangeProvider from "../modals/request-change-provider/RequestChangeProvider";
+import { urlRegex } from "../../global/variables/Variables";
 
 interface ContentIInterface {
   setTabView: (value: string) => void;
@@ -34,7 +36,6 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
   const [viewHelpDetailModal, setViewHelpDetailModal] =
     useState<boolean>(false);
   const [viewConfirmModal, setViewConfirmModal] = useState<boolean>(false);
-  const urlRegex: RegExp = /^(?=.{3,})[a-zA-Z0-9_-]+$/;
   const [viewMode, setViewMode] = useState(false);
   const [viewRequestModal, setViewRequestModal] = useState(false);
 
@@ -56,7 +57,6 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
     setLoadingButton(true);
     createCriticalDataProvider(data, token)
       .then((res) => {
-        // props.setTabView("profile");
         toast.success(
           "Empresa Cadastrada com sucesso! \n  Por favor, refaça o login!"
         );
@@ -180,7 +180,6 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
             type="text"
             placeholder="CPF: 000.000.000-00 ou CNPJ: 00.000.000/0000-00 "
             value={document}
-            // maxLength={14}
             onChange={(e) => setDocument(handleMask(e.target.value))}
           />
         </label>
@@ -269,6 +268,16 @@ const ContentIdentity: React.FC<ContentIInterface> = ({ ...props }) => {
         view={viewConfirmModal}
         setView={() => setViewConfirmModal(false)}
         handleSubmit={user?.business ? handleUpdateData : handleSaveData}
+      />
+      <RequestChangeProvider
+        view={viewRequestModal}
+        setView={() => setViewRequestModal(false)}
+        providerData={{
+          businessName: user?.business.name || null,
+          url: user?.business.url || null,
+          document: user?.business.document || null,
+          category: user?.business.category || null,
+        }}
       />
     </>
   );
